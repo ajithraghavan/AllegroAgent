@@ -46,8 +46,13 @@ class OllamaProvider(BaseProvider):
                 f"Cannot connect to Ollama at {self.base_url}. "
                 "Is Ollama running? Start it with: ollama serve"
             )
-        except requests.HTTPError as e:
-            raise ProviderError(f"Ollama API error: {e}")
+        except requests.HTTPError:
+            error_detail = resp.text
+            try:
+                error_detail = resp.json().get("error", resp.text)
+            except Exception:
+                pass
+            raise ProviderError(f"Ollama API error: {error_detail}")
 
         data = resp.json()
         message = data.get("message", {})
