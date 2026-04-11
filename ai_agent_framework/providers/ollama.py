@@ -17,11 +17,16 @@ class OllamaProvider(BaseProvider):
         if not model:
             raise ProviderError("Model name is required for Ollama provider.")
 
+        tools = kwargs.pop("tools", None)
+
         payload = {
             "model": model,
             "messages": messages,
             "stream": False,
         }
+
+        if tools:
+            payload["tools"] = tools
 
         if "temperature" in kwargs:
             payload.setdefault("options", {})["temperature"] = kwargs.pop("temperature")
@@ -47,6 +52,8 @@ class OllamaProvider(BaseProvider):
         data = resp.json()
         message = data.get("message", {})
 
+        tool_calls = message.get("tool_calls")
+
         return ProviderResponse(
             content=message.get("content", ""),
             model=model,
@@ -55,4 +62,5 @@ class OllamaProvider(BaseProvider):
                 "prompt_tokens": data.get("prompt_eval_count"),
                 "completion_tokens": data.get("eval_count"),
             },
+            tool_calls=tool_calls,
         )

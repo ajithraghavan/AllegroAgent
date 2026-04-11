@@ -50,7 +50,7 @@ class Client:
         Args:
             model: Model string in 'provider:model' format (e.g. "ollama:llama3")
             messages: List of message dicts with 'role' and 'content'.
-            **kwargs: Additional params like temperature, max_tokens.
+            **kwargs: Additional params like temperature, max_tokens, tools.
 
         Returns:
             ProviderResponse with the LLM's reply.

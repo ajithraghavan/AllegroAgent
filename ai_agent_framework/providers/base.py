@@ -9,6 +9,7 @@ class ProviderResponse:
     model: str
     provider: str
     usage: dict = None
+    tool_calls: list = None
 
     def __str__(self):
         return self.content
