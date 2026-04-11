@@ -16,3 +16,8 @@ class ProviderNotFoundError(FrameworkError):
 class InvalidModelFormatError(FrameworkError):
     """Raised when the model string doesn't follow 'provider:model' format."""
     pass
+
+
+class ToolError(FrameworkError):
+    """Raised when a tool encounters an error during execution."""
+    pass
