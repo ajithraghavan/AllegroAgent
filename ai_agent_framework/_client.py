@@ -2,18 +2,11 @@ from .providers import get_provider, ProviderResponse
 from .exceptions import InvalidModelFormatError
 
 
-class Client:
-    """Simple unified LLM client (Layer 2).
+class _Client:
+    """Internal LLM client used by `Agent`. Not part of the public API.
 
     Parses 'provider:model' syntax and routes to the correct provider.
-
-    Usage:
-        client = Client()
-        response = client.chat(
-            model="ollama:llama3",
-            messages=[{"role": "user", "content": "Hello!"}]
-        )
-        print(response.content)
+    Agents instantiate this internally — end users should use `Agent`.
     """
 
     def __init__(self, **provider_kwargs):

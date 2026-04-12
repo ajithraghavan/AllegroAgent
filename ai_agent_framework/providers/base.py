@@ -19,8 +19,8 @@ class BaseProvider(ABC):
     """Base interface that all providers must implement.
 
     Every provider translates between the framework's standard
-    message format and its own API format. Client and Agent never
-    see provider-specific details.
+    message format and its own API format. The `Agent` never sees
+    provider-specific details.
     """
 
     @abstractmethod

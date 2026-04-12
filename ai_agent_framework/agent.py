@@ -1,6 +1,6 @@
 import json
 
-from .client import Client
+from ._client import _Client
 from .providers import ProviderResponse
 from .tools.base import BaseTool
 
@@ -8,7 +8,7 @@ from .tools.base import BaseTool
 class Agent:
     """Stateful AI Agent with tool support.
 
-    Uses Client internally for LLM calls. Maintains conversation
+    The single public entry point of the framework. Maintains conversation
     history and executes tools when the LLM requests them.
 
     Usage:
@@ -44,7 +44,7 @@ class Agent:
         self.system_prompt = config.get("system_prompt")
         self.max_tokens = config.get("max_tokens")
 
-        self._client = Client()
+        self._client = _Client()
         self._history: list[dict] = []
 
         # Register tools by name for quick lookup

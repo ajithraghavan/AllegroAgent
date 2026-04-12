@@ -6,32 +6,12 @@ Usage:
     3. Run: python tests/test_agent.py
 """
 
-from ai_agent_framework import Client, Agent, FileWriteTool
+from ai_agent_framework import Agent, FileWriteTool
 from ai_agent_framework.exceptions import ProviderError
 
 
-def test_client():
-    """Test Layer 2: Client direct chat."""
-    print("=" * 50)
-    print("Testing Client.chat()")
-    print("=" * 50)
-
-    client = Client()
-    response = client.chat(
-        model="ollama:gemma3:1b",
-        messages=[{"role": "user", "content": "Say hello in one sentence."}],
-        temperature=0.1,
-    )
-
-    print(f"Response: {response.content}")
-    print(f"Model: {response.model}")
-    print(f"Provider: {response.provider}")
-    print(f"Usage: {response.usage}")
-    print()
-
-
 def test_agent():
-    """Test Layer 3: Agent with conversation history."""
+    """Test Agent with conversation history."""
     print("=" * 50)
     print("Testing Agent.run()")
     print("=" * 50)
@@ -107,7 +87,6 @@ def test_agent_with_tools():
 
 
 if __name__ == "__main__":
-    test_client()
     test_agent()
     test_agent_with_tools()
     print("All tests passed!")
