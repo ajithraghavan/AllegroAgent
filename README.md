@@ -68,13 +68,13 @@ ollama pull llama3
 ```python
 from ai_agent_framework import Agent, FileWriteTool
 
-agent = Agent({
-    "name": "Writer",
-    "model": "ollama:llama3",
-    "temperature": 0.1,
-    "system_prompt": "You are a helpful writing assistant.",
-    "tools": [FileWriteTool()],
-})
+agent = Agent(
+    name="Writer",
+    model="ollama:llama3",
+    temperature=0.1,
+    system_prompt="You are a helpful writing assistant.",
+    tools=[FileWriteTool()],
+)
 
 print(agent.run("Write a haiku about the ocean to ocean.txt"))
 print(agent.run("Now write one about mountains to mountains.txt"))
@@ -91,12 +91,12 @@ What happens on each `run()`:
 
 ## Configuration
 
-`Agent` accepts a single config dict:
+`Agent` accepts the following keyword arguments (all keyword-only):
 
-| Key             | Type            | Description                                        |
+| Argument        | Type            | Description                                        |
 | --------------- | --------------- | -------------------------------------------------- |
-| `name`          | `str`           | Display name (default `"Agent"`)                   |
 | `model`         | `str`           | **Required.** Format: `provider:model`             |
+| `name`          | `str`           | Display name (default `"Agent"`)                   |
 | `temperature`   | `float`         | Sampling temperature                               |
 | `max_tokens`    | `int`           | Max response tokens                                |
 | `system_prompt` | `str`           | System instruction prepended to every call        |
