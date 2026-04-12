@@ -22,5 +22,8 @@ env/
 .vscode/
 .idea/
 
-# Claude Code
-CLAUDE.md
+# Claude Code — per-user, per-machine state (not project-shared)
+.claude/settings.local.json
+.claude/.credentials.json
+.claude/projects/
+.claude/todos/
