@@ -12,44 +12,51 @@ class Agent:
     history and executes tools when the LLM requests them.
 
     Usage:
-        from ai_agent_framework.tools import FileWriteTool
+        from ai_agent_framework import Agent, FileWriteTool
 
-        agent = Agent({
-            "name": "Research Agent",
-            "model": "ollama:llama3",
-            "temperature": 0.1,
-            "tools": [FileWriteTool()],
-        })
+        agent = Agent(
+            name="Research Agent",
+            model="ollama:llama3",
+            temperature=0.1,
+            tools=[FileWriteTool()],
+        )
         response = agent.run("Write a haiku to poem.txt")
         print(response)
     """
 
     MAX_TOOL_ROUNDS = 10
 
-    def __init__(self, config: dict):
-        """Initialize agent from config dict.
+    def __init__(
+        self,
+        *,
+        model: str,
+        name: str = "Agent",
+        temperature: float | None = None,
+        max_tokens: int | None = None,
+        system_prompt: str | None = None,
+        tools: list[BaseTool] | None = None,
+    ):
+        """Initialize an Agent.
 
         Args:
-            config: Dict with keys:
-                - name (str): Agent name
-                - model (str): Model in 'provider:model' format
-                - temperature (float, optional): Sampling temperature
-                - system_prompt (str, optional): System instruction
-                - max_tokens (int, optional): Max response tokens
-                - tools (list[BaseTool], optional): Tools the agent can use
+            model: Model in 'provider:model' format (e.g. "ollama:llama3"). Required.
+            name: Display name for the agent.
+            temperature: Sampling temperature.
+            max_tokens: Max response tokens.
+            system_prompt: System instruction prepended to every call.
+            tools: Tools the agent is allowed to invoke.
         """
-        self.name = config.get("name", "Agent")
-        self.model = config["model"]
-        self.temperature = config.get("temperature")
-        self.system_prompt = config.get("system_prompt")
-        self.max_tokens = config.get("max_tokens")
+        self.name = name
+        self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.system_prompt = system_prompt
 
         self._client = _Client()
         self._history: list[dict] = []
 
-        # Register tools by name for quick lookup
         self._tools: dict[str, BaseTool] = {}
-        for tool in config.get("tools", []):
+        for tool in tools or []:
             self._tools[tool.name] = tool
 
     def run(self, prompt: str) -> str:

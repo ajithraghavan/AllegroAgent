@@ -16,12 +16,12 @@ def test_agent():
     print("Testing Agent.run()")
     print("=" * 50)
 
-    agent = Agent({
-        "name": "Test Agent",
-        "model": "ollama:gemma3:1b",
-        "temperature": 0.1,
-        "system_prompt": "You are a helpful assistant. Keep responses brief.",
-    })
+    agent = Agent(
+        name="Test Agent",
+        model="ollama:gemma3:1b",
+        temperature=0.1,
+        system_prompt="You are a helpful assistant. Keep responses brief.",
+    )
 
     print(f"Agent: {agent}")
     print()
@@ -45,13 +45,13 @@ def test_agent_with_tools():
     print("Testing Agent with FileWriteTool")
     print("=" * 50)
 
-    agent = Agent({
-        "name": "Writer Agent",
-        "model": "ollama:gemma3:1b",
-        "temperature": 0.1,
-        "system_prompt": "You are a helpful assistant. Use the file_write tool when asked to write files.",
-        "tools": [FileWriteTool()],
-    })
+    agent = Agent(
+        name="Writer Agent",
+        model="ollama:gemma3:1b",
+        temperature=0.1,
+        system_prompt="You are a helpful assistant. Use the file_write tool when asked to write files.",
+        tools=[FileWriteTool()],
+    )
 
     print(f"Agent: {agent}")
     print()
