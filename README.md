@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="AllegroAgent logo" width="200">
+  <img src="logo.png" alt="AllegroAgent logo" width="480">
 </p>
 
 # AllegroAgent
