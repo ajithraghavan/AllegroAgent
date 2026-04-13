@@ -3,7 +3,7 @@ requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ai-agent-framework"
+name = "allegro-agent"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
@@ -17,4 +17,4 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["ai_agent_framework*"]
+include = ["allegro_agent*"]

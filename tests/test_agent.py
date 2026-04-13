@@ -6,8 +6,8 @@ Usage:
     3. Run: python tests/test_agent.py
 """
 
-from ai_agent_framework import Agent, FileWriteTool
-from ai_agent_framework.exceptions import ProviderError
+from allegro_agent import Agent, FileWriteTool
+from allegro_agent.exceptions import ProviderError
 
 
 def test_agent():

@@ -12,7 +12,11 @@ class Agent:
     history and executes tools when the LLM requests them.
 
     Usage:
+<<<<<<< HEAD:ai_agent_framework/agent.py
         from ai_agent_framework import Agent, FileWriteTool
+=======
+        from allegro_agent.tools import FileWriteTool
+>>>>>>> 85324c2 (Logo):allegro_agent/agent.py
 
         agent = Agent(
             name="Research Agent",

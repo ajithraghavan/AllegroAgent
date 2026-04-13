@@ -1,4 +1,8 @@
-# AI Agent Framework
+<p align="center">
+  <img src="logo.png" alt="AllegroAgent logo" width="200">
+</p>
+
+# AllegroAgent
 
 A lightweight, extensible Python framework for building stateful AI agents backed by local or remote LLMs. `Agent` is the single public entry point — configure it with a model string and a list of tools, and call `run()`. The framework handles conversation history, provider routing, and the tool-calling loop for you.
 
@@ -27,7 +31,7 @@ A lightweight, extensible Python framework for building stateful AI agents backe
 `Agent` talks to providers through a small internal router (`_Client`) that parses the `provider:model` string and caches provider instances. You never need to touch it directly.
 
 ```
-ai_agent_framework/
+allegro_agent/
 ├── agent.py              # Agent — the public entry point
 ├── _client.py            # internal — provider router used by Agent
 ├── exceptions.py         # FrameworkError hierarchy
@@ -66,7 +70,7 @@ ollama pull llama3
 ## Quick Start
 
 ```python
-from ai_agent_framework import Agent, FileWriteTool
+from allegro_agent import Agent, FileWriteTool
 
 agent = Agent(
     name="Writer",
@@ -111,8 +115,8 @@ What happens on each `run()`:
 Subclass `BaseProvider` and register it:
 
 ```python
-from ai_agent_framework.providers.base import BaseProvider, ProviderResponse
-from ai_agent_framework import register_provider
+from allegro_agent.providers.base import BaseProvider, ProviderResponse
+from allegro_agent import register_provider
 
 class OpenAIProvider(BaseProvider):
     def generate(self, messages, **kwargs) -> ProviderResponse:
@@ -133,7 +137,7 @@ register_provider("openai", OpenAIProvider)
 Subclass `BaseTool`, define JSON Schema parameters, implement `execute`:
 
 ```python
-from ai_agent_framework import BaseTool
+from allegro_agent import BaseTool
 
 class AddTool(BaseTool):
     name = "add"
@@ -178,7 +182,7 @@ The reference end-to-end script in `tests/test_agent.py` exercises `Agent` again
 
 ## Project Metadata
 
-- **Package:** `ai-agent-framework` v0.1.0
+- **Package:** `allegro-agent` v0.1.0
 - **Python:** ≥ 3.10
 - **Runtime deps:** `requests`
 - **License:** see `LICENSE`
