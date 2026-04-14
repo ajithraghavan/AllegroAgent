@@ -50,11 +50,17 @@ allegro_agent/
 
 Requires Python **3.10+**.
 
+Install from PyPI:
+
+```bash
+pip install allegro-agent
+```
+
+Or install from source (for development):
+
 ```bash
 git clone https://github.com/ajithraghavan/AllegroAgent.git
 cd AllegroAgent
-pip install -e .
-# or, with dev extras:
 pip install -e ".[dev]"
 ```
 
