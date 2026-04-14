@@ -51,8 +51,8 @@ allegro_agent/
 Requires Python **3.10+**.
 
 ```bash
-git clone <repo-url>
-cd AgentOne
+git clone https://github.com/ajithraghavan/AllegroAgent.git
+cd AllegroAgent
 pip install -e .
 # or, with dev extras:
 pip install -e ".[dev]"
