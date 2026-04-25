@@ -7,6 +7,7 @@ from .exceptions import (
     ProviderNotFoundError,
     InvalidModelFormatError,
     ToolError,
+    InvalidHistoryError,
 )
 
 __all__ = [
@@ -20,4 +21,5 @@ __all__ = [
     "ProviderNotFoundError",
     "InvalidModelFormatError",
     "ToolError",
+    "InvalidHistoryError",
 ]

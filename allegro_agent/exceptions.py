@@ -21,3 +21,8 @@ class InvalidModelFormatError(FrameworkError):
 class ToolError(FrameworkError):
     """Raised when a tool encounters an error during execution."""
     pass
+
+
+class InvalidHistoryError(FrameworkError):
+    """Raised when the history argument passed to Agent is malformed."""
+    pass

@@ -1,8 +1,13 @@
+import copy
 import json
 
 from ._client import _Client
+from .exceptions import InvalidHistoryError
 from .providers import ProviderResponse
 from .tools.base import BaseTool
+
+
+_ALLOWED_HISTORY_ROLES = ("user", "assistant", "tool")
 
 
 class Agent:
@@ -36,6 +41,7 @@ class Agent:
         max_tokens: int | None = None,
         system_prompt: str | None = None,
         tools: list[BaseTool] | None = None,
+        history: list[dict] | None = None,
     ):
         """Initialize an Agent.
 
@@ -46,6 +52,11 @@ class Agent:
             max_tokens: Max response tokens.
             system_prompt: System instruction prepended to every call.
             tools: Tools the agent is allowed to invoke.
+            history: Prior conversation messages to resume from. Each item must
+                be a dict with 'role' (one of 'user', 'assistant', 'tool') and
+                'content' (str). Assistant messages may include 'tool_calls'.
+                The list is deep-copied so callers can mutate their original
+                freely.
         """
         self.name = name
         self.model = model
@@ -54,7 +65,11 @@ class Agent:
         self.system_prompt = system_prompt
 
         self._client = _Client()
-        self._history: list[dict] = []
+        if history is None:
+            self._history: list[dict] = []
+        else:
+            self._validate_history(history)
+            self._history = copy.deepcopy(history)
 
         self._tools: dict[str, BaseTool] = {}
         for tool in tools or []:
@@ -144,9 +159,68 @@ class Agent:
         messages.extend(self._history)
         return messages
 
+    def history(self) -> list[dict]:
+        """Return a deep copy of the conversation messages so far.
+
+        The returned list is a JSON-serializable snapshot the caller can store
+        anywhere (file, database, network) and later pass back via the
+        ``history`` constructor argument to resume the conversation.
+        """
+        return copy.deepcopy(self._history)
+
     def reset(self):
         """Clear conversation history."""
         self._history.clear()
+
+    @staticmethod
+    def _validate_history(history) -> None:
+        """Validate the shape of a history payload passed to the constructor.
+
+        Raises InvalidHistoryError with a message naming the offending index
+        and problem so callers can fix bad payloads quickly.
+        """
+        if not isinstance(history, list):
+            raise InvalidHistoryError(
+                f"history must be a list, got {type(history).__name__}"
+            )
+
+        for i, msg in enumerate(history):
+            if not isinstance(msg, dict):
+                raise InvalidHistoryError(
+                    f"history[{i}] must be a dict, got {type(msg).__name__}"
+                )
+            if "role" not in msg:
+                raise InvalidHistoryError(f"history[{i}] is missing 'role'")
+            if "content" not in msg:
+                raise InvalidHistoryError(f"history[{i}] is missing 'content'")
+
+            role = msg["role"]
+            if role not in _ALLOWED_HISTORY_ROLES:
+                raise InvalidHistoryError(
+                    f"history[{i}] has invalid role {role!r}; "
+                    f"must be one of {_ALLOWED_HISTORY_ROLES} "
+                    f"(system prompts go through the 'system_prompt' kwarg, not history)"
+                )
+
+            if not isinstance(msg["content"], str):
+                raise InvalidHistoryError(
+                    f"history[{i}] 'content' must be a str, "
+                    f"got {type(msg['content']).__name__}"
+                )
+
+            if role == "assistant" and "tool_calls" in msg:
+                tool_calls = msg["tool_calls"]
+                if not isinstance(tool_calls, list):
+                    raise InvalidHistoryError(
+                        f"history[{i}] 'tool_calls' must be a list, "
+                        f"got {type(tool_calls).__name__}"
+                    )
+                for j, tc in enumerate(tool_calls):
+                    if not isinstance(tc, dict):
+                        raise InvalidHistoryError(
+                            f"history[{i}].tool_calls[{j}] must be a dict, "
+                            f"got {type(tc).__name__}"
+                        )
 
     def __repr__(self):
         tool_names = list(self._tools.keys())
