@@ -222,7 +222,7 @@ The reference end-to-end script in `tests/test_agent.py` exercises `Agent` again
 
 ## Project Metadata
 
-- **Package:** `allegro-agent` v0.1.0
+- **Package:** `allegro-agent` v0.3.0
 - **Python:** ≥ 3.10
 - **Runtime deps:** `requests`
 - **License:** see `LICENSE`
